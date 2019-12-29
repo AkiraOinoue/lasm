@@ -124,8 +124,6 @@ Loop.ladd:
 	jmp	Loop.ladd		; ループの先頭へジャンプ
 Exit.Loop:
 	mov eax,[add_rst] ; 加算結果を返す
-	mov ah,	[_CF]	; carryフラグを設定
-	sahf
 	leave
 	ret
 
