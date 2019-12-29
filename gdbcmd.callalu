@@ -1,0 +1,17 @@
+#for callalu.cxx
+b main
+r 8 2
+l
+b asm_div
+c
+disass asm_div,
+layout asm
+display /x $edi
+display /x $esi
+display /x $rdx
+display /x $eax
+display /x $ebx
+display /x $ecx
+display $eflags
+#memory value disp /x *0xnnnn
+ni

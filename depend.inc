@@ -1,0 +1,1 @@
+lalu.o: lalu.hpp
