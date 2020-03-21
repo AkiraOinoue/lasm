@@ -5,18 +5,19 @@
 //////////////////////////////
 #include <map>
 #include <string>
-extern "C" unsigned long ladd(int bit, int lh, int rh);
-extern "C" unsigned long lsub(int bit, int lh, int rh);
-extern "C" unsigned long lmul(int bit, int lh, int rh);
-extern "C" unsigned long l_div(int lh, int rh, int* remn);
+extern "C" long ladd(int bit, int lh, int rh);
+extern "C" long lsub(int bit, int lh, int rh);
+extern "C" long lmul(int bit, int lh, int rh);
+extern "C" long l_div(int lh, int rh, int* remn);
 
 namespace CPU
 {
 	enum  Operand
 	{
-		e_add = 0,
+		e_add = 1,
 		e_sub,
 		e_mul,
+		e_div,
 		e_ladd = 90,
 		e_lsub,
 		e_lmul,
@@ -148,6 +149,13 @@ public:
 		}
 		return add_rst;
 	}
+	T div(T lh, T rh)
+	{
+		T sub_rst = 0;
+		sub_rst = lh / rh;
+		this->m_remn = lh % rh;
+		return sub_rst;
+	}
 public:
 	// 除算の余り
 	int m_remn;
@@ -164,6 +172,7 @@ private:
 		{"add", Operand::e_add},
 		{"sub", Operand::e_sub},
 		{"mul", Operand::e_mul},
+		{"div", Operand::e_div},
 		{"ladd", Operand::e_ladd},
 		{"lsub", Operand::e_lsub},
 		{"lmul", Operand::e_lmul},

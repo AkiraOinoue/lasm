@@ -28,8 +28,8 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-	unsigned long  lh = 456;
-	unsigned long  rh = 228;
+	long  lh = 456;
+	long  rh = 228;
 	string mode="";
 	
 	try
@@ -50,8 +50,20 @@ int main(int argc, char **argv)
 			rh = stoull(string(argv[3]));
 		}
 		CPU::ALU<long> alu(32);
-		unsigned long retv;
-		cout << "function " << argv[1] << ": " << flush;
+		long retv;
+		if (argc > 2 )
+		{
+			cout << "function " << argv[1] << ": " << flush;
+		}
+		else
+		{
+			cout << "usage: lalu {命令} 第一オペランド　第二オペランド" << endl;
+			cout << "{命令}: ladd lsub lmul ldiv add sub mul div" << endl;
+			cout << "オペランドは10進数(DECIMAL)" << endl;
+			cout << "例）乗算の場合：lalu lmul 5 3" << endl;
+			cout << "結果：function lmul: 5*3=15" << endl;
+			return 0;
+		}
 		switch(alu.Map(argv[1]))
 		{
 		case (int)CPU::Operand::e_ladd:
@@ -82,6 +94,14 @@ int main(int argc, char **argv)
 		case (int)CPU::Operand::e_mul:
 			retv = alu.mul(lh, rh);
 			cout << mode << lh << "*" << rh << "=" << retv << endl;
+			break;
+		case (int)CPU::Operand::e_div:
+			retv = alu.div(lh, rh);
+			cout << mode << lh << "/" << rh << "=" << retv << endl;
+			cout << "remain=" << alu.m_remn << endl;
+			break;
+		default:
+			cout << "対応する命令がありません。" << endl;
 			break;
 		} 
 	}
