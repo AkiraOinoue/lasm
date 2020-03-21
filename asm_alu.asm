@@ -135,10 +135,21 @@ Exit.Loop:
 ;$3:rh			edx
 ;return		eax
 global lsub
+section .data
+lsub._CF		db	0
 section .text
 lsub:
 	enter 	0,0
+	cmp esi,	edx	;キャリーフラグ設定
+	lahf			;フラグレジスタ→AH
+	mov [lsub._CF],	ah
+	
 	neg edx
 	call ladd
+
+	push	rax		;演算結果退避
+	mov ah,		[lsub._CF]
+	sahf			;AH→フラグレジスタ
+	pop		rax		;演算結果戻し
 	leave
 	ret

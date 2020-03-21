@@ -3,6 +3,7 @@
 ;*******************************************
 ;Functions
 ;*******************************************
+extern lsub
 section .data
 section .bss
 q_rst			resd	1
@@ -24,23 +25,29 @@ F_InitialCheck:
 L_NG:
 	ret
 
-F_GetMSBCount:
+section .bss
+M.tmp		resd	1 ; テンポラリー変数
+section .text
 	; M (Divisor)のMSBを求めて左シフトして最大値にする（符号なし）
 	; QにDividendを格納
+F_GetMSBCount:
+	mov [Q],		edi ;Q(Dividend)を格納 
+	mov [M.tmp],	esi ;Mを退避
 	; シフトカウンター格納
-	bsr ebx,		esi
-	mov eax,		31
-	sub eax,		ebx
-	mov [shf_cnt],	eax
+	bsr ebx,		esi ;M(esi)のMSBを求める
+	;lsub(edi, esi(lh), edx(rh))を呼び出し
+	mov edi,		32 ; ビット長
+	mov esi,		31
+	mov edx,		ebx
+	call lsub
+	mov [shf_cnt],	eax ;シフトカウンター格納
 	mov ecx,		eax
 	
 	; Mを左シフト
+	mov esi,		[M.tmp]
 	mov eax,		esi
 	shl eax,		cl
-	mov [M],		eax	
-
-	; Q(Dividend)を格納
-	mov [Q],		edi
+	mov [M],		eax ;Mの最大値を格納
 	ret
 
 F_RsltInit:
@@ -58,30 +65,31 @@ F_ShiftSetRst:
 	; eax == 1 -> 1
 	mov ebx,		[q_rst]
 	shl ebx, 		1
-	or eax,		0
-	jz				L_Zero
-	bts ebx,		0
-L_Zero:
+	or	ebx,		eax
 	mov [q_rst], 	ebx
 	ret
 
 F_SubFromDivid:
 	; if Sub(Dividend - Divisor) >= 0 then [q_rst]:0 = 1
 	; else [q_rst]:0 = 0; Dividend += Divisor
-	mov eax,	[Q]
-	mov ebx,	[M]
-	sub eax,	ebx
+	;lsub(edi, esi(lh), edx(rh))を呼び出し
+	mov edi,	32 ;ビット数指定
+	mov esi,	[Q]
+	mov edx,	[M]
+	call lsub
+
 	mov ebx,	1
 	mov [tmp], ebx
 	mov ebx,	[M]
 	jnc			L_Plus
-	add eax,	ebx
+	mov eax,	[Q] ;Qを戻す
+
 	mov ebx,	0
 	mov [tmp],	ebx	
 L_Plus:
 	push rax
 	mov eax,	[tmp]
-	call 		F_ShiftSetRst
+	call 		F_ShiftSetRst ;商を設定
 	pop rax
 	mov [Q],	eax	
 	ret
@@ -103,11 +111,15 @@ F_ShftRghtDivisor:
 ;$2:M			esi(Divisor)
 ;$3:余り		[rdx](Remainder)
 ;return		eax(Q)
+section .bss
+div.Rem	resq	1 ;余りの64ビットポインター
 global l_div
 section .text
 l_div:
 	enter 	0,0
 ;Initialize
+	; 余りポインター退避
+	mov [div.Rem],		rdx
 	; 結果バッファをクリア
 	; 余りバッファをクリア
 	call		F_RsltInit
@@ -134,6 +146,7 @@ L_DivLoop:
 	jns			L_DivLoop ; プラスならばループ
 L_ExitMain:
 	mov eax,	[Q] ;余り
+	mov rdx,	[div.Rem] ;余りの64ビットポインターを設定
 	mov [rdx],	eax
 	mov eax,	[q_rst] ; 除算結果
 	leave
