@@ -5,11 +5,11 @@ OBJS = lalu.o asm_div.obj asm_mul.obj asm_alu.obj
 #OBJS = callalu.o asm_alu.obj asm_div.obj asm_mul.obj
 
 #インクルードファイルパス
-INCPATH = /home/oinoue/mygcc/include/c++/9.2.0
+INCPATH = /usr/include/c++/9
 
 # 定義済みマクロの再定義
-CXXFLAGS = -g -m64 -Wall -O2 -std=c++2a -I$(INCPATH)
-LDFLAGS = -lstdc++ -lstdc++fs
+CXXFLAGS = -fPIC -g -m64 -Wall -O2 -std=c++2a -I$(INCPATH)
+LDFLAGS = -lstdc++ -lstdc++fs -no-pie
 NASMFLAGS = -g -f elf64
 
 # サフィックスルール適用対象の拡張子の定義
