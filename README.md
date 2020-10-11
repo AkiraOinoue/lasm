@@ -1,5 +1,9 @@
 # 概要</br>
 このコンテンツ（lasm=Logical Assembler）は、CPUの算術四則演算（符号なし整数の加減乗除）を論理演算(and,or,xor,ビットシフト命令など)によってソフトウェアでシミュレートしたアセンブリーソースコードです。ターゲットとしたCPUはIntel x86系（32ビット）です。</br>
+# ソース</br>
+C++:lalu.cxx  lalu.hpp</br>
+Assembler:asm_alu.asm  asm_div.asm  asm_mul.asm</br>
+make: makefile</br>
 </br>
 # 各演算のコーリングシーケンス</br>
 C++のプログラムからの呼び出し方法を示します。</br>
@@ -44,4 +48,4 @@ usage: lalu {命令}　第一オペランド　第二オペランド</br>
 ＜開発ツール＞</br>
 開発統合ツール：Geany ver1.36</br>
 アセンブラ：nasm ver2.14.02</br>
-C++コンパイラ：gcc 9.2.0</br>
+C++コンパイラ：gcc 9.2.0以上</br>
