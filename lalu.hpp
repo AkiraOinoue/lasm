@@ -12,7 +12,7 @@ extern "C" long l_div(int lh, int rh, int* remn);
 
 namespace CPU
 {
-	enum  Operand
+	enum  class Operand
 	{
 		e_add = 1,
 		e_sub,

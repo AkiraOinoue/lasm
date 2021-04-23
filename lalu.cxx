@@ -2,6 +2,10 @@
  * main.cxx
  * 
  * Copyright 2019 Akira Oinoue <oinoue@oinoue-dynabook-T552-36FR>
+ *
+ * main.cxx
+ * 
+ * Copyright 2019 Akira Oinoue <oinoue@oinoue-dynabook-T552-36FR>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,38 +68,44 @@ int main(int argc, char **argv)
 			cout << "結果：function lmul: 5*3=15" << endl;
 			return 0;
 		}
+
+		int tmplh;
+		int tmprh;
 		switch(alu.Map(argv[1]))
 		{
-		case (int)CPU::Operand::e_ladd:
+		case CPU::Operand::e_ladd:
 			retv = alu.ladd(lh, rh);
 			cout << mode << lh << "+" << rh << "=" << retv << endl;
 			break;
-		case (int)CPU::Operand::e_lsub:
+		case CPU::Operand::e_lsub:
 			retv = alu.lsub(lh, rh);
 			cout << mode << lh << "-" << rh << "=" << retv << endl;
 			break;
-		case (int)CPU::Operand::e_lmul:
+		case CPU::Operand::e_lmul:
+			tmplh = lh;
+			tmprh = rh;
 			retv = alu.lmul(lh, rh);
-			cout << mode << lh << "*" << rh << "=" << retv << endl;
+			cout << mode << tmplh << "*" << tmprh << "=" << retv << endl;
 			break;
-		case (int)CPU::Operand::e_ldiv:
+		case CPU::Operand::e_ldiv:
+			tmplh = lh;
 			retv = alu.ldiv(lh, rh);
-			cout << mode << lh << "/" << rh << "=" << retv << endl;
+			cout << mode << tmplh << "/" << rh << "=" << retv << endl;
 			cout << "remain=" << alu.m_remn << endl;
 			break;
-		case (int)CPU::Operand::e_add:
+		case CPU::Operand::e_add:
 			retv = alu.add(lh, rh);
 			cout << mode << lh << "+" << rh << "=" << retv << endl;
 			break;
-		case (int)CPU::Operand::e_sub:
+		case CPU::Operand::e_sub:
 			retv = alu.sub(lh, rh);
 			cout << mode << lh << "-" << rh << "=" << retv << endl;
 			break;
-		case (int)CPU::Operand::e_mul:
+		case CPU::Operand::e_mul:
 			retv = alu.mul(lh, rh);
 			cout << mode << lh << "*" << rh << "=" << retv << endl;
 			break;
-		case (int)CPU::Operand::e_div:
+		case CPU::Operand::e_div:
 			retv = alu.div(lh, rh);
 			cout << mode << lh << "/" << rh << "=" << retv << endl;
 			cout << "remain=" << alu.m_remn << endl;
@@ -111,4 +121,3 @@ int main(int argc, char **argv)
 	}
 	return 0;
 }
-
