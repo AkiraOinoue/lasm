@@ -50,8 +50,8 @@ int main(int argc, char **argv)
 		}
 		else if (argc > 2)
 		{
-			lh = stoull(string(argv[2]));
-			rh = stoull(string(argv[3]));
+			lh = stoul(string(argv[2]));
+			rh = stoul(string(argv[3]));
 		}
 		CPU::ALU<long> alu(32);
 		long retv;
@@ -74,12 +74,14 @@ int main(int argc, char **argv)
 		switch(alu.Map(argv[1]))
 		{
 		case CPU::Operand::e_ladd:
+			tmplh = lh;
 			retv = alu.ladd(lh, rh);
-			cout << mode << lh << "+" << rh << "=" << retv << endl;
+			cout << mode << tmplh << "+" << rh << "=" << retv << endl;
 			break;
 		case CPU::Operand::e_lsub:
+			tmplh = lh;
 			retv = alu.lsub(lh, rh);
-			cout << mode << lh << "-" << rh << "=" << retv << endl;
+			cout << mode << tmplh << "-" << rh << "=" << retv << endl;
 			break;
 		case CPU::Operand::e_lmul:
 			tmplh = lh;
@@ -89,7 +91,7 @@ int main(int argc, char **argv)
 			break;
 		case CPU::Operand::e_ldiv:
 			tmplh = lh;
-			retv = alu.ldiv(lh, rh);
+			retv = alu.ldiv( lh, rh);
 			cout << mode << tmplh << "/" << rh << "=" << retv << endl;
 			cout << "remain=" << alu.m_remn << endl;
 			break;

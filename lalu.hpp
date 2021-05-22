@@ -8,7 +8,7 @@
 extern "C" long ladd(int bit, int lh, int rh);
 extern "C" long lsub(int bit, int lh, int rh);
 extern "C" long lmul(int bit, int lh, int rh);
-extern "C" long l_div(int lh, int rh, int* remn);
+extern "C" long l_div(int lh, int rh, long long* remn);
 
 namespace CPU
 {
@@ -158,7 +158,7 @@ public:
 	}
 public:
 	// 除算の余り
-	int m_remn;
+	long long m_remn;
 private:
 	// データ
 	T m_lh;
